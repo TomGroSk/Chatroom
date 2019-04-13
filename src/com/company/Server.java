@@ -46,7 +46,7 @@ public class Server extends JFrame{
                     showMessage("\nServer ended the connection! ");
                 }
                 finally {
-                    closeCrap();
+                    closeConnection();
                 }
             }
         }
@@ -56,7 +56,7 @@ public class Server extends JFrame{
     }
 
     private void waitForConnection() throws IOException{
-        showMessage("Waiting for someone to connect . . . \n ");
+        showMessage("Waiting for client . . . \n ");
         connection = server.accept();
         showMessage("Connected to: "+connection.getInetAddress().getHostName());
     }
@@ -76,12 +76,12 @@ public class Server extends JFrame{
                 showMessage("\n" + message);
             }
             catch (ClassNotFoundException clfExcept){
-                showMessage(" \n I don't know what that user send!");
+                showMessage(" \nI don't know what that user send!");
             }
-        }while(!message.equals("CLIENT: END"));
+        }while(!message.equals("CLIENT: exit"));
     }
-    private void closeCrap(){
-        showMessage("\n Closing connections . . . \n");
+    private void closeConnection(){
+        showMessage("\nClosing connections . . . \n");
         ableToType(false);
         try{
             output.close();
@@ -99,7 +99,7 @@ public class Server extends JFrame{
             showMessage("\nSERVER:" + message);
         }
         catch (IOException ioExcept){
-            chatWindow.append("\n  Ooops can't send that message!");
+            chatWindow.append("\nOoops can't send that message!");
         }
     }
     private void showMessage(final String text){

@@ -46,7 +46,7 @@ public class Client extends JFrame {
             ioExcept.printStackTrace();
         }
         finally {
-            closeCrap();
+            closeConnection();
         }
     }
 
@@ -73,11 +73,11 @@ public class Client extends JFrame {
             catch (ClassNotFoundException cntExcept){
                 showMessage("\nI don't know that type of object!");
             }
-        }while (!message.equals("SERVER: END"));
+        }while (!message.equals("SERVER: exit"));
     }
 
-    private void closeCrap(){
-        showMessage("\n Closing down . . .");
+    private void closeConnection(){
+        showMessage("\nClosing down . . .");
         ableToType(false);
         try{
             output.close();

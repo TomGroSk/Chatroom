@@ -7,6 +7,5 @@ public class Main {
             Server server = new Server();
             server.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             server.startRunning();
-
         }
 }
