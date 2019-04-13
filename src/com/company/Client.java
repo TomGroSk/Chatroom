@@ -1,8 +1,5 @@
 package com.company;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -31,8 +28,8 @@ public class Client extends JFrame {
         );
         add(userText, BorderLayout.NORTH);
         chatWindow = new JTextArea();
-        add(new JScrollPane(chatWindow), BorderLayout.CENTER);
-        setSize(300,150);
+        add(new JScrollPane(chatWindow));
+        setSize(400,500);
         setVisible(true);
     }
 
@@ -43,7 +40,7 @@ public class Client extends JFrame {
             whileChatting();
         }
         catch (EOFException eofExcept){
-            showMessage("\n Client terminated connection");
+            showMessage("\nClient terminated connection");
         }
         catch (IOException ioExcept){
             ioExcept.printStackTrace();
@@ -54,16 +51,16 @@ public class Client extends JFrame {
     }
 
     private void connectToServer() throws IOException{
-        showMessage("\n Attempting connection . . .");
+        showMessage("\nAttempting connection . . .");
         connection = new Socket(InetAddress.getByName(serverIP), 6789);
-        showMessage("\n Connected to:" + connection.getInetAddress().getHostName());
+        showMessage("\nConnected to:" + connection.getInetAddress().getHostName());
     }
 
     private void setUpStreams() throws IOException{
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
-        showMessage("\n Streams are now good!");
+        showMessage("\nStreams are now good!");
     }
 
     private void whileChatting() throws IOException{
@@ -74,9 +71,9 @@ public class Client extends JFrame {
                 showMessage("\n" + message);
             }
             catch (ClassNotFoundException cntExcept){
-                showMessage("\n I dont know that type object!");
+                showMessage("\nI don't know that type of object!");
             }
-        }while (!message.equals("CLIENT: END"));
+        }while (!message.equals("SERVER: END"));
     }
 
     private void closeCrap(){
@@ -107,7 +104,9 @@ public class Client extends JFrame {
         SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {
+                        allowToChangeChatWindow(true);
                         chatWindow.append(text);
+                        allowToChangeChatWindow(false);
                     }
                 }
         );
@@ -117,6 +116,15 @@ public class Client extends JFrame {
                 new Runnable() {
                     public void run() {
                         userText.setEditable(decide);
+                    }
+                }
+        );
+    }
+    private void allowToChangeChatWindow(final boolean decide){
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    public void run() {
+                        chatWindow.setEditable(decide);
                     }
                 }
         );

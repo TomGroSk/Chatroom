@@ -29,7 +29,7 @@ public class Server extends JFrame{
         add(userText, BorderLayout.NORTH);
         chatWindow = new JTextArea();
         add(new JScrollPane(chatWindow));
-        setSize(300,150);
+        setSize(400,500);
         setVisible(true);
     }
 
@@ -43,7 +43,7 @@ public class Server extends JFrame{
                     whileChatting();
                 }
                 catch (EOFException eofExcept){
-                    showMessage("\n Server ended the connection! ");
+                    showMessage("\nServer ended the connection! ");
                 }
                 finally {
                     closeCrap();
@@ -56,15 +56,15 @@ public class Server extends JFrame{
     }
 
     private void waitForConnection() throws IOException{
-        showMessage(" Waiting for someone to connect . . . \n ");
+        showMessage("Waiting for someone to connect . . . \n ");
         connection = server.accept();
-        showMessage(" Connected to: "+connection.getInetAddress().getHostName());
+        showMessage("Connected to: "+connection.getInetAddress().getHostName());
     }
     private void setUpStreams() throws IOException{
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
-        showMessage("\n Streams are setup now! ");
+        showMessage("\nStreams are setup now! ");
     }
     private void whileChatting() throws IOException{
         String message = "You are now connected!";
@@ -73,12 +73,12 @@ public class Server extends JFrame{
         do{
             try{
                 message = (String) input.readObject();
-                showMessage("\n"+message);
+                showMessage("\n" + message);
             }
             catch (ClassNotFoundException clfExcept){
                 showMessage(" \n I don't know what that user send!");
             }
-        }while(!message.equals("SERVER: END"));
+        }while(!message.equals("CLIENT: END"));
     }
     private void closeCrap(){
         showMessage("\n Closing connections . . . \n");
@@ -94,9 +94,9 @@ public class Server extends JFrame{
     }
     private void sendMessage(String message){
         try{
-            output.writeObject("SERVER: "+ message);
+            output.writeObject("SERVER: " + message);
             output.flush();
-            showMessage("\nSERVER: "+ message);
+            showMessage("\nSERVER:" + message);
         }
         catch (IOException ioExcept){
             chatWindow.append("\n  Ooops can't send that message!");
@@ -104,11 +104,13 @@ public class Server extends JFrame{
     }
     private void showMessage(final String text){
         SwingUtilities.invokeLater(
-            new Runnable() {
-                public void run() {
-                    chatWindow.append(text);
+                new Runnable() {
+                    public void run() {
+                        allowToChangeChatWindow(true);
+                        chatWindow.append(text);
+                        allowToChangeChatWindow(false);
+                    }
                 }
-            }
         );
     }
     private void ableToType(final boolean decide){
@@ -116,6 +118,15 @@ public class Server extends JFrame{
                 new Runnable() {
                     public void run() {
                         userText.setEditable(decide);
+                    }
+                }
+        );
+    }
+    private void allowToChangeChatWindow(final boolean decide){
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    public void run() {
+                        chatWindow.setEditable(decide);
                     }
                 }
         );
