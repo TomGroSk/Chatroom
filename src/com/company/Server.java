@@ -78,7 +78,7 @@ public class Server extends JFrame{
             catch (ClassNotFoundException clfExcept){
                 showMessage(" \n I don't know what that user send!");
             }
-        }while(!message.equals("CLIENT: END"));
+        }while(!message.equals("SERVER: END"));
     }
     private void closeCrap(){
         showMessage("\n Closing connections . . . \n");
