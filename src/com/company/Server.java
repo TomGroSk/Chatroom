@@ -47,6 +47,7 @@ public class Server extends JFrame{
                 }
                 finally {
                     closeConnection();
+                    dispose();
                 }
             }
         }
@@ -96,7 +97,7 @@ public class Server extends JFrame{
         try{
             output.writeObject("SERVER: " + message);
             output.flush();
-            showMessage("\nSERVER:" + message);
+            showMessage("\nSERVER: " + message);
         }
         catch (IOException ioExcept){
             chatWindow.append("\nOoops can't send that message!");
@@ -106,9 +107,9 @@ public class Server extends JFrame{
         SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {
-                        allowToChangeChatWindow(true);
+                        ableToEditChatWindow(true);
                         chatWindow.append(text);
-                        allowToChangeChatWindow(false);
+                        ableToEditChatWindow(false);
                     }
                 }
         );
@@ -122,7 +123,7 @@ public class Server extends JFrame{
                 }
         );
     }
-    private void allowToChangeChatWindow(final boolean decide){
+    private void ableToEditChatWindow(final boolean decide){
         SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {

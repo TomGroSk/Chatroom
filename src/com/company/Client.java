@@ -47,6 +47,7 @@ public class Client extends JFrame {
         }
         finally {
             closeConnection();
+            dispose();
         }
     }
 
@@ -104,9 +105,9 @@ public class Client extends JFrame {
         SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {
-                        allowToChangeChatWindow(true);
+                        ableToEditChatWindow(true);
                         chatWindow.append(text);
-                        allowToChangeChatWindow(false);
+                        ableToEditChatWindow(false);
                     }
                 }
         );
@@ -120,7 +121,7 @@ public class Client extends JFrame {
                 }
         );
     }
-    private void allowToChangeChatWindow(final boolean decide){
+    private void ableToEditChatWindow(final boolean decide){
         SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {
