@@ -15,7 +15,7 @@ public class Server extends JFrame{
     private Socket connection;
 
     public Server(){
-        super("Simple chat");
+        super("Simple chat - server");
         userText = new JTextField();
         userText.setEditable(false);
         userText.addActionListener(
@@ -78,7 +78,7 @@ public class Server extends JFrame{
             catch (ClassNotFoundException clfExcept){
                 showMessage(" \n I don't know what that user send!");
             }
-        }while(!message.equals("CLIENT - END"));
+        }while(!message.equals("CLIENT: END"));
     }
     private void closeCrap(){
         showMessage("\n Closing connections . . . \n");
