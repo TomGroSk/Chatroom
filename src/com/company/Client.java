@@ -2,7 +2,6 @@ package com.company;
 import java.io.*;
 import java.net.*;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 public class Client extends JFrame {
@@ -19,11 +18,9 @@ public class Client extends JFrame {
         userText = new JTextField();
         userText.setEditable(false);
         userText.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        sendMessage(e.getActionCommand());
-                        userText.setText("");
-                    }
+                e -> {
+                    sendMessage(e.getActionCommand());
+                    userText.setText("");
                 }
         );
         add(userText, BorderLayout.NORTH);
@@ -52,8 +49,8 @@ public class Client extends JFrame {
     }
 
     private void connectToServer() throws IOException{
-        showMessage("\nAttempting connection . . .");
-        connection = new Socket(InetAddress.getByName(serverIP), 6789);
+        showMessage("Attempting connection . . .");
+        connection = new Socket(InetAddress.getByName(serverIP), 1111);
         showMessage("\nConnected to:" + connection.getInetAddress().getHostName());
     }
 
@@ -97,37 +94,27 @@ public class Client extends JFrame {
             showMessage("\nCLIENT: " + message);
         }
         catch (IOException ioExcept){
-            chatWindow.append("\n Something gone wrong! :(");
+            chatWindow.append("\nSomething's gone wrong!");
         }
     }
 
     private void showMessage(final String text){
         SwingUtilities.invokeLater(
-                new Runnable() {
-                    public void run() {
-                        ableToEditChatWindow(true);
-                        chatWindow.append(text);
-                        ableToEditChatWindow(false);
-                    }
+                () -> {
+                    ableToEditChatWindow(true);
+                    chatWindow.append(text);
+                    ableToEditChatWindow(false);
                 }
         );
     }
     private void ableToType(final boolean decide){
         SwingUtilities.invokeLater(
-                new Runnable() {
-                    public void run() {
-                        userText.setEditable(decide);
-                    }
-                }
+                () -> userText.setEditable(decide)
         );
     }
     private void ableToEditChatWindow(final boolean decide){
         SwingUtilities.invokeLater(
-                new Runnable() {
-                    public void run() {
-                        chatWindow.setEditable(decide);
-                    }
-                }
+                () -> chatWindow.setEditable(decide)
         );
     }
 }
