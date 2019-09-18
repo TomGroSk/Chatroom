@@ -13,6 +13,12 @@ public class Server extends JFrame{
     private ServerSocket server;
     private Socket connection;
 
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        server.startRunning();
+    }
+
     public Server(){
         super("Simple chat - server");
         userText = new JTextField();
@@ -20,8 +26,7 @@ public class Server extends JFrame{
         add(userText, BorderLayout.NORTH);
         userText.addActionListener(
                 e -> {
-                    sendMessage(e.getActionCommand());
-                    userText.setText("");
+                    System.out.println("asdasdads");
                 }
         );
         chatWindow = new JTextArea();
